@@ -1,0 +1,6 @@
+{
+    "require": {
+        "twig/twig": "^3.0",
+        "wp-coding-standards/wpcs": "^2.3"
+    }
+}
