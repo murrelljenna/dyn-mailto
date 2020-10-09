@@ -78,8 +78,11 @@ class Dyn_Mailto_Widget extends WP_Widget
 
         $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
 
-        //$twig->addExtension(new \Twig\Extension\SandboxExtension());
         $twig->addExtension(new \Twig\Extension\StringLoaderExtension());
+        $plugin_dir_path = dirname(__FILE__);
+
+        $sandbox_options = include "$plugin_dir_path/admin/get_sandbox_options.php";
+        $twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
         $template = array(
             'to' => $twig->createTemplate($instance['to']),
@@ -87,12 +90,14 @@ class Dyn_Mailto_Widget extends WP_Widget
             'body' => $twig->createTemplate($instance['body'])
         );
 
+        $template_fields = include "$plugin_dir_path/admin/get_fields.php";
+
                     
 
         extract($args);
 
         // Check the widget options
-        $display = "display here";
+        $display = "d";
 
         // Run templating
         $to = $template['to']->render(['tast' => 'hello']);
@@ -104,12 +109,17 @@ class Dyn_Mailto_Widget extends WP_Widget
 
         // Display the widget
         echo '<div class="widget-text wp_widget_plugin_box">';
-            echo "<a href=\"mailto:{$to}?subject={$subject}&body={$body}\">{$display}</a>";
+            echo "<a href='mailto:{$to}?subject={$subject}&body={$body}'>{$display}</a>";
         echo '</div>';
 
         // WordPress core after_widget hook (always include )
         echo $after_widget;
 
+    }
+
+    private function initialize_fields() {
+        $fields = array();
+        $fields = array_merge($fields, wp_get_current_user()["data"]);
     }
 
     private function var_error_log( $object=null ){
