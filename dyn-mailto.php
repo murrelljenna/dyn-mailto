@@ -67,13 +67,13 @@ class Dyn_Mailto_Widget extends WP_Widget
             <?php // Widget Title ?>
         <p>
             <label for="<?php echo esc_attr($this->get_field_id('to')); ?>"><?php _e('To', 'text_domain'); ?></label>
-            <textarea class="widefat ui-widget" id="<?php echo esc_attr($this->get_field_id('to')); ?>" name="<?php echo esc_attr($this->get_field_name('to')); ?>" type="text" value="<?php echo esc_attr($instance['to']); ?>" ></textarea>
+            <textarea class="widefat ui-widget" id="<?php echo esc_attr($this->get_field_id('to')); ?>" name="<?php echo esc_attr($this->get_field_name('to')); ?>"><?php echo esc_attr($instance['to']); ?></textarea>
         </p>
 
             <?php // Text Field ?>
         <p>
             <label for="<?php echo esc_attr($this->get_field_id('subject')); ?>"><?php _e('Subject', 'text_domain'); ?></label>
-            <textarea class="widefat" id="<?php echo esc_attr($this->get_field_id('subject')); ?>" name="<?php echo esc_attr($this->get_field_name('subject')); ?>" type="text" value="<?php echo esc_attr($instance['subject']); ?>" ></textarea>
+            <textarea class="widefat" id="<?php echo esc_attr($this->get_field_id('subject')); ?>" name="<?php echo esc_attr($this->get_field_name('subject')); ?>"><?php echo esc_attr($instance['subject']); ?></textarea>
         </p>
 
             <?php // Textarea Field ?>
@@ -120,9 +120,9 @@ class Dyn_Mailto_Widget extends WP_Widget
         $display = "d";
 
         // Run templating
-        $to = $template['to']->render(['tast' => 'hello']);
-        $subject = $template['subject']->render(['tast' => 'hello']);
-        $body = $template['body']->render(['tast' => 'hello']);
+        $to = $template['to']->render($template_fields);
+        $subject = $template['subject']->render($template_fields);
+        $body = $template['body']->render($template_fields);
 
         // WordPress core before_widget hook (always include )
         echo $before_widget;
