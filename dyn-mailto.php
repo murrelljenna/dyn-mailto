@@ -50,15 +50,21 @@ class Dyn_Mailto_Widget extends WP_Widget
 
         $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
 
-        $template = $twig->load('form.html');
-        $template_fields = include "$plugin_dir_path/admin/get_fields.php";
+        //$template = $twig->load('form.html');
+        //$template_fields = include "$plugin_dir_path/admin/get_fields.php";
         //echo $template->render(['fields' => $template_fields]);
+        $template_fields = include "$plugin_dir_path/admin/get_fields.php";
+
+        wp_register_script( 'form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/public/form_textcomplete.js", array(), null, false);
+
+        wp_enqueue_script( 'form-textcomplete');
+        wp_localize_script( 'form-textcomplete', 'textcomplete_ajax_params', array_keys($template_fields));
+
         ?>
 
 
 
             <?php // Widget Title ?>
-        <script type="module" src="https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/public/form_textcomplete.js"></script>
         <p>
             <label for="<?php echo esc_attr($this->get_field_id('to')); ?>"><?php _e('To', 'text_domain'); ?></label>
             <textarea class="widefat ui-widget" id="<?php echo esc_attr($this->get_field_id('to')); ?>" name="<?php echo esc_attr($this->get_field_name('to')); ?>" type="text" value="<?php echo esc_attr($instance['to']); ?>" ></textarea>

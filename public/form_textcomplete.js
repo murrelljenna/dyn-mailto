@@ -159,18 +159,12 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   };
 
 }));
-
 jQuery(function() {
     jQuery("document").ready(function() {
         // The tags we will be looking for
-        var categoryTags = ["interest", "research", "personal", "social", "inventory"];
-        var interestTags = ["company", "ticker", "sector", "currency", "region"];
-        var researchTags = ["report", "analyst", "notes", "ideas"];
-        var personalTags = ["spouse", "wife", "husband", "son", "daughter", "birthday", "anniversary", "school", "college", "university"];
-        var inventoryTags = ["software", "hardware", "OMS", "EMS", "SOR", "algos", "network", "routing network"];
-
+        var field_names = textcomplete_ajax_params;
         // State variable to keep track of which category we are in
-        var tagState = categoryTags;
+        var tagState = field_names;
 
         // Helper functions
         function split(val) {
