@@ -15,6 +15,8 @@ require __DIR__ . '/vendor/autoload.php';
 
 class Dyn_Mailto_Widget extends WP_Widget
 {
+    private $template_fields = array();
+    private $plugin_dir_path;
     // Main constructor
     public function __construct() 
     {
@@ -25,62 +27,44 @@ class Dyn_Mailto_Widget extends WP_Widget
             'customize_selective_refresh' => true,
             )
         );
+
+        $this->plugin_dir_path = dirname(__FILE__);
     }
 
     // The widget form (for the backend )
     public function form( $instance ) {
 
         // Set widget defaults
-        $defaults = array(
+        $mailto = array(
         'to' => '',
         'cc' => '',
         'bcc' => '',
-        'subject' => ''
+        'subject' => '',
+        'body' => '',
         );
         
         // Parse current settings with defaults
-        extract(wp_parse_args(( array ) $instance, $defaults)); 
+        extract(wp_parse_args(( array ) $instance, $mailto)); 
         wp_enqueue_script( 'jquery-ui-autocomplete' );
         wp_enqueue_script( 'jquery-ui-widget' );
         wp_enqueue_script( 'jquery-ui-menu' );
         wp_enqueue_script( 'jquery-ui-position' );
 
-        $plugin_dir_path = dirname(__FILE__);
-        $loader = new \Twig\Loader\FilesystemLoader("$plugin_dir_path/templates");
 
-        $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
+        $this->plugin_dir_path = dirname(__FILE__);
 
-        //$template = $twig->load('form.html');
-        //$template_fields = include "$plugin_dir_path/admin/get_fields.php";
-        //echo $template->render(['fields' => $template_fields]);
-        $template_fields = include "$plugin_dir_path/admin/get_fields.php";
+        $template_fields = include "$this->plugin_dir_path/admin/get_fields.php";
 
         wp_register_script( 'form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/public/form_textcomplete.js", array(), null, false);
 
         wp_enqueue_script( 'form-textcomplete');
         wp_localize_script( 'form-textcomplete', 'textcomplete_ajax_params', array_keys($template_fields));
+        $this->render_widget_form($instance);
 
         ?>
 
 
 
-            <?php // Widget Title ?>
-        <p>
-            <label for="<?php echo esc_attr($this->get_field_id('to')); ?>"><?php _e('To', 'text_domain'); ?></label>
-            <textarea class="widefat ui-widget" id="<?php echo esc_attr($this->get_field_id('to')); ?>" name="<?php echo esc_attr($this->get_field_name('to')); ?>"><?php echo esc_attr($instance['to']); ?></textarea>
-        </p>
-
-            <?php // Text Field ?>
-        <p>
-            <label for="<?php echo esc_attr($this->get_field_id('subject')); ?>"><?php _e('Subject', 'text_domain'); ?></label>
-            <textarea class="widefat" id="<?php echo esc_attr($this->get_field_id('subject')); ?>" name="<?php echo esc_attr($this->get_field_name('subject')); ?>"><?php echo esc_attr($instance['subject']); ?></textarea>
-        </p>
-
-            <?php // Textarea Field ?>
-        <p>
-            <label for="<?php echo esc_attr($this->get_field_id('body')); ?>"><?php _e('Body:', 'text_domain'); ?></label>
-            <textarea class="widefat" id="<?php echo esc_attr($this->get_field_id('body')); ?>" name="<?php echo esc_attr($this->get_field_name('body')); ?>"><?php echo wp_kses_post($instance['body']); ?></textarea>
-        </p>
 
     <?php }
 
@@ -90,7 +74,7 @@ class Dyn_Mailto_Widget extends WP_Widget
         $instance['to']       = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';  
         $instance['subject']  = isset($new_instance['subject']) ? wp_strip_all_tags($new_instance['subject']) : '';  
         $instance['body']       = isset($new_instance['body']) ? wp_strip_all_tags($new_instance['body']) : '';  
-        return $instance;
+        return $new_instance;
     }
 
     // Display the widget
@@ -101,9 +85,9 @@ class Dyn_Mailto_Widget extends WP_Widget
         $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
 
         $twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-        $plugin_dir_path = dirname(__FILE__);
+        $this->plugin_dir_path = dirname(__FILE__);
 
-        $sandbox_options = include "$plugin_dir_path/admin/get_sandbox_options.php";
+        $sandbox_options = include "$this->plugin_dir_path/admin/get_sandbox_options.php";
         $twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
         $template = array(
@@ -112,7 +96,7 @@ class Dyn_Mailto_Widget extends WP_Widget
             'body' => $twig->createTemplate($instance['body'])
         );
 
-        $template_fields = include "$plugin_dir_path/admin/get_fields.php";
+        $template_fields = include "$this->plugin_dir_path/admin/get_fields.php";
 
         extract($args);
 
@@ -140,6 +124,39 @@ class Dyn_Mailto_Widget extends WP_Widget
     private function initialize_fields() {
         $fields = array();
         $fields = array_merge($fields, wp_get_current_user()["data"]);
+    }
+
+    // Render widget with Twig template. Used by widget().
+    private function render_widget() {
+
+    }
+
+    // Render form with Twig template. Used by form().
+    private function render_widget_form($instance) {
+
+        $loader = new \Twig\Loader\FilesystemLoader("$this->plugin_dir_path/templates");
+        $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
+        $template = $twig->load('widget_form.html');
+
+        $template_fields = array(
+            'field_id' => array(
+            'to' => esc_attr($this->get_field_id('to')),
+            'subject' => esc_attr($this->get_field_id('subject')),
+            'body' => esc_attr($this->get_field_id('body')),
+            ),
+            'field_name' => array(
+            'to' => esc_attr($this->get_field_name('to')),
+            'subject' => esc_attr($this->get_field_name('subject')),
+            'body' => esc_attr($this->get_field_name('body')),
+            ),
+            'field_value' => array(
+            'to' => esc_attr($instance['to']),
+            'subject' => esc_attr($instance['subject']),
+            'body' => esc_attr($instance['body']),
+            ),
+        );
+
+        echo $template->render($template_fields);
     }
 
     private function var_error_log( $object=null ){
