@@ -13,7 +13,6 @@ License: GPL2
 
 require __DIR__ . '/vendor/autoload.php';
 
-
 class Dyn_Mailto_Widget extends WP_Widget
 {
     // Main constructor
@@ -40,18 +39,35 @@ class Dyn_Mailto_Widget extends WP_Widget
         );
         
         // Parse current settings with defaults
-        extract(wp_parse_args(( array ) $instance, $defaults)); ?>
+        extract(wp_parse_args(( array ) $instance, $defaults)); 
+        wp_enqueue_script( 'jquery-ui-autocomplete' );
+        wp_enqueue_script( 'jquery-ui-widget' );
+        wp_enqueue_script( 'jquery-ui-menu' );
+        wp_enqueue_script( 'jquery-ui-position' );
+
+        $plugin_dir_path = dirname(__FILE__);
+        $loader = new \Twig\Loader\FilesystemLoader("$plugin_dir_path/templates");
+
+        $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
+
+        $template = $twig->load('form.html');
+        $template_fields = include "$plugin_dir_path/admin/get_fields.php";
+        //echo $template->render(['fields' => $template_fields]);
+        ?>
+
+
 
             <?php // Widget Title ?>
+        <script type="module" src="https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/public/form_textcomplete.js"></script>
         <p>
             <label for="<?php echo esc_attr($this->get_field_id('to')); ?>"><?php _e('To', 'text_domain'); ?></label>
-            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('to')); ?>" name="<?php echo esc_attr($this->get_field_name('to')); ?>" type="text" value="<?php echo esc_attr($instance['to']); ?>" />
+            <textarea class="widefat ui-widget" id="<?php echo esc_attr($this->get_field_id('to')); ?>" name="<?php echo esc_attr($this->get_field_name('to')); ?>" type="text" value="<?php echo esc_attr($instance['to']); ?>" ></textarea>
         </p>
 
             <?php // Text Field ?>
         <p>
             <label for="<?php echo esc_attr($this->get_field_id('subject')); ?>"><?php _e('Subject', 'text_domain'); ?></label>
-            <input class="widefat" id="<?php echo esc_attr($this->get_field_id('subject')); ?>" name="<?php echo esc_attr($this->get_field_name('subject')); ?>" type="text" value="<?php echo esc_attr($instance['subject']); ?>" />
+            <textarea class="widefat" id="<?php echo esc_attr($this->get_field_id('subject')); ?>" name="<?php echo esc_attr($this->get_field_name('subject')); ?>" type="text" value="<?php echo esc_attr($instance['subject']); ?>" ></textarea>
         </p>
 
             <?php // Textarea Field ?>
@@ -91,8 +107,6 @@ class Dyn_Mailto_Widget extends WP_Widget
         );
 
         $template_fields = include "$plugin_dir_path/admin/get_fields.php";
-
-                    
 
         extract($args);
 
