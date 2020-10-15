@@ -1,13 +1,15 @@
 <?php
-/*
-Plugin Name: Dynamic Mailto
-Plugin URI: http://www.wpexplorer.com/create-widget-plugin-wordpress/
-Description: This plugin adds a custom widget.
-Version: 1.0
-Author: AJ Clarke
-Author URI: http://www.wpexplorer.com/create-widget-plugin-wordpress/
-License: GPL2
-*/
+/**
+ * Plugin that enables allows templating mailto links on page load.
+ * php version 7.2.24
+
+ * Plugin Name: Dynamic Mailto
+ * Plugin URI: http://www.wpexplorer.com/create-widget-plugin-wordpress/
+ * Description: Enables templating mailto links on page load.
+ * Version: 1.0
+ * @author: Jenna Murrell
+ * @license: MIT
+ */
 
 // The widget class
 
@@ -15,9 +17,11 @@ require __DIR__ . '/vendor/autoload.php';
 
 class Dyn_Mailto_Widget extends WP_Widget
 {
-    private $template_fields = array();
-    private $plugin_dir_path;
-    // Main constructor
+    private $_template_fields = array();
+    private $_plugin_dir_path;
+    /**
+     * Main constructor 
+     */
     public function __construct() 
     {
         parent::__construct(
@@ -28,11 +32,12 @@ class Dyn_Mailto_Widget extends WP_Widget
             )
         );
 
-        $this->plugin_dir_path = dirname(__FILE__);
+        $this->_plugin_dir_path = dirname(__FILE__);
     }
 
     // The widget form (for the backend )
-    public function form( $instance ) {
+    public function form( $instance ) 
+    {
 
         // Set widget defaults
         $mailto = array(
@@ -45,20 +50,20 @@ class Dyn_Mailto_Widget extends WP_Widget
         
         // Parse current settings with defaults
         extract(wp_parse_args(( array ) $instance, $mailto)); 
-        wp_enqueue_script( 'jquery-ui-autocomplete' );
-        wp_enqueue_script( 'jquery-ui-widget' );
-        wp_enqueue_script( 'jquery-ui-menu' );
-        wp_enqueue_script( 'jquery-ui-position' );
+        wp_enqueue_script('jquery-ui-autocomplete');
+        wp_enqueue_script('jquery-ui-widget');
+        wp_enqueue_script('jquery-ui-menu');
+        wp_enqueue_script('jquery-ui-position');
 
 
-        $this->plugin_dir_path = dirname(__FILE__);
+        $this->_plugin_dir_path = dirname(__FILE__);
 
-        $template_fields = include "$this->plugin_dir_path/admin/get_fields.php";
+        $_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
 
-        wp_register_script( 'form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/public/form_textcomplete.js", array(), null, false);
+        wp_register_script('form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/public/form_textcomplete.js", array(), null, false);
 
-        wp_enqueue_script( 'form-textcomplete');
-        wp_localize_script( 'form-textcomplete', 'textcomplete_ajax_params', array_keys($template_fields));
+        wp_enqueue_script('form-textcomplete');
+        wp_localize_script('form-textcomplete', 'textcomplete_ajax_params', array_keys($_template_fields));
         $this->render_widget_form($instance);
 
         ?>
@@ -69,7 +74,8 @@ class Dyn_Mailto_Widget extends WP_Widget
     <?php }
 
     // Update widget settings
-    public function update( $new_instance, $old_instance ) {
+    public function update( $new_instance, $old_instance ) 
+    {
         $instance = $old_instance;
         $instance['to']       = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';  
         $instance['subject']  = isset($new_instance['subject']) ? wp_strip_all_tags($new_instance['subject']) : '';  
@@ -85,9 +91,9 @@ class Dyn_Mailto_Widget extends WP_Widget
         $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
 
         $twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-        $this->plugin_dir_path = dirname(__FILE__);
+        $this->_plugin_dir_path = dirname(__FILE__);
 
-        $sandbox_options = include "$this->plugin_dir_path/admin/get_sandbox_options.php";
+        $sandbox_options = include "$this->_plugin_dir_path/admin/get_sandbox_options.php";
         $twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
         $template = array(
@@ -96,7 +102,7 @@ class Dyn_Mailto_Widget extends WP_Widget
             'body' => $twig->createTemplate($instance['body'])
         );
 
-        $template_fields = include "$this->plugin_dir_path/admin/get_fields.php";
+        $_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
 
         extract($args);
 
@@ -104,9 +110,9 @@ class Dyn_Mailto_Widget extends WP_Widget
         $display = "d";
 
         // Run templating
-        $to = $template['to']->render($template_fields);
-        $subject = $template['subject']->render($template_fields);
-        $body = $template['body']->render($template_fields);
+        $to = $template['to']->render($_template_fields);
+        $subject = $template['subject']->render($_template_fields);
+        $body = $template['body']->render($_template_fields);
 
         // WordPress core before_widget hook (always include )
         echo $before_widget;
@@ -121,24 +127,27 @@ class Dyn_Mailto_Widget extends WP_Widget
 
     }
 
-    private function initialize_fields() {
+    private function initialize_fields() 
+    {
         $fields = array();
         $fields = array_merge($fields, wp_get_current_user()["data"]);
     }
 
     // Render widget with Twig template. Used by widget().
-    private function render_widget() {
+    private function render_widget() 
+    {
 
     }
 
     // Render form with Twig template. Used by form().
-    private function render_widget_form($instance) {
+    private function render_widget_form($instance) 
+    {
 
-        $loader = new \Twig\Loader\FilesystemLoader("$this->plugin_dir_path/templates");
+        $loader = new \Twig\Loader\FilesystemLoader("$this->_plugin_dir_path/templates");
         $twig = new \Twig\Environment($loader, ['strict_variables' => false]);
         $template = $twig->load('widget_form.html');
 
-        $template_fields = array(
+        $_template_fields = array(
             'field_id' => array(
             'to' => esc_attr($this->get_field_id('to')),
             'subject' => esc_attr($this->get_field_id('subject')),
@@ -156,15 +165,16 @@ class Dyn_Mailto_Widget extends WP_Widget
             ),
         );
 
-        echo $template->render($template_fields);
+        echo $template->render($_template_fields);
     }
 
-    private function var_error_log( $object=null ){
+    private function var_error_log( $object=null )
+    {
         ob_start();                    // start buffer capture
-        var_dump( $object );           // dump the values
+        var_dump($object);           // dump the values
         $contents = ob_get_contents(); // put the buffer into a variable
         ob_end_clean();                // end capture
-        error_log( $contents );        // log contents of the result of var_dump( $object )
+        error_log($contents);        // log contents of the result of var_dump( $object )
     }
 
 }
