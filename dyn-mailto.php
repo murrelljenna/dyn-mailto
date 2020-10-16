@@ -54,7 +54,6 @@ class Dyn_Mailto_Widget extends WP_Widget
 		'body' => '',
 		);
 		
-		extract(wp_parse_args(( array ) $instance, $mailto)); 
 		wp_enqueue_script('jquery-ui-autocomplete');
 		wp_enqueue_script('jquery-ui-widget');
 		wp_enqueue_script('jquery-ui-menu');
@@ -94,8 +93,6 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
 
-		extract($args);
-
 		// Run templating
 		$widget_fields = array(
 		'display' => 't',
@@ -104,9 +101,9 @@ class Dyn_Mailto_Widget extends WP_Widget
 		'body' => $template['body']->render($_template_fields),
 		);
 
-		echo $before_widget;
+		echo $args['before_widget'];
 		$this->render_widget($widget_fields);
-		echo $after_widget;
+		echo $args['after_widget'];
 
 	}
 
