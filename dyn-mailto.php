@@ -20,6 +20,11 @@ class Dyn_Mailto_Widget extends WP_Widget
 	private $_template_fields = array();
 	private $_plugin_dir_path;
 
+	/* Twig */
+
+	private $_twig_loader;
+	private $_twig;
+
 	public function __construct() 
 	{
 		parent::__construct(
@@ -31,6 +36,11 @@ class Dyn_Mailto_Widget extends WP_Widget
 		);
 
 		$this->_plugin_dir_path = dirname(__FILE__);
+
+		/* Load twig */
+
+		$this->_twig_loader = new \Twig\Loader\FilesystemLoader("$this->_plugin_dir_path/templates");
+		$this->_twig = new \Twig\Environment($this->_twig_loader, ['strict_variables' => false]);
 	}
 
 	public function form( $instance ) 
@@ -76,18 +86,15 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 	public function widget( $args, $instance ) 
 	{
-		$loader = new \Twig\Loader\ArrayLoader([ ]);
 
-		$twig = new \Twig\Environment($loader, ['strict_variables' => false]);
-
-		$twig->addExtension(new \Twig\Extension\StringLoaderExtension());
+		$this->_twig->addExtension(new \Twig\Extension\StringLoaderExtension());
 		$sandbox_options = include "$this->_plugin_dir_path/admin/get_sandbox_options.php";
-		$twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
+		$this->_twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
 		$template = array(
-		'to' => $twig->createTemplate($instance['to']),
-		'subject' => $twig->createTemplate($instance['subject']),
-		'body' => $twig->createTemplate($instance['body'])
+		'to' => $this->_twig->createTemplate($instance['to']),
+		'subject' => $this->_twig->createTemplate($instance['subject']),
+		'body' => $this->_twig->createTemplate($instance['body'])
 		);
 
 		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
@@ -117,23 +124,16 @@ class Dyn_Mailto_Widget extends WP_Widget
 	// Render widget with Twig template. Used by widget().
 	private function render_widget( $fields ) 
 	{
-		$loader = new \Twig\Loader\FilesystemLoader("$this->_plugin_dir_path/templates");
-		$twig = new \Twig\Environment($loader, ['strict_variables' => false]);
-		$template = $twig->load('widget.html');
-	$this->var_error_log($fields);
-
+		$template = $this->_twig->load('widget.html');
 		echo $template->render($fields);
 	}
 
 	// Render form with Twig template. Used by form().
 	private function render_widget_form($instance) 
 	{
+		$template = $this->_twig->load('widget_form.html');
 
-		$loader = new \Twig\Loader\FilesystemLoader("$this->_plugin_dir_path/templates");
-		$twig = new \Twig\Environment($loader, ['strict_variables' => false]);
-		$template = $twig->load('widget_form.html');
-
-		$_template_fields = array(
+		$fields = array(
 			'field_id' => array(
 			'to' => esc_attr($this->get_field_id('to')),
 			'subject' => esc_attr($this->get_field_id('subject')),
@@ -151,7 +151,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 			),
 		);
 
-		echo $template->render($_template_fields);
+		echo $template->render($fields);
 	}
 
 	private function var_error_log( $object=null )

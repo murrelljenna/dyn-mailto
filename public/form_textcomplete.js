@@ -64,7 +64,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	];
 
 	var TextareaHelper = function (elem) {
-	console.log(elem.nodeName);
 	if (elem.nodeName.toLowerCase() !== 'textarea') return;
 	this.$text = $(elem);
 	this.$mirror = $('<div/>').css({ 'position'	: 'absolute'
