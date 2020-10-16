@@ -19,9 +19,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 {
 	private $_template_fields = array();
 	private $_plugin_dir_path;
-	/**
-	 * Main constructor 
-	 */
+
 	public function __construct() 
 	{
 		parent::__construct(
@@ -33,14 +31,11 @@ class Dyn_Mailto_Widget extends WP_Widget
 		);
 
 		$this->_plugin_dir_path = dirname(__FILE__);
-		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
 	}
 
-	// The widget form (for the backend )
 	public function form( $instance ) 
 	{
 
-		// Set widget defaults
 		$mailto = array(
 		'to' => '',
 		'cc' => '',
@@ -49,15 +44,11 @@ class Dyn_Mailto_Widget extends WP_Widget
 		'body' => '',
 		);
 		
-		// Parse current settings with defaults
 		extract(wp_parse_args(( array ) $instance, $mailto)); 
 		wp_enqueue_script('jquery-ui-autocomplete');
 		wp_enqueue_script('jquery-ui-widget');
 		wp_enqueue_script('jquery-ui-menu');
 		wp_enqueue_script('jquery-ui-position');
-
-
-		$this->_plugin_dir_path = dirname(__FILE__);
 
 		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
 
@@ -90,8 +81,6 @@ class Dyn_Mailto_Widget extends WP_Widget
 		$twig = new \Twig\Environment($loader, ['strict_variables' => false]);
 
 		$twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-		$this->_plugin_dir_path = dirname(__FILE__);
-
 		$sandbox_options = include "$this->_plugin_dir_path/admin/get_sandbox_options.php";
 		$twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
@@ -101,6 +90,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 		'body' => $twig->createTemplate($instance['body'])
 		);
 
+		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
 
 		extract($args);
 
