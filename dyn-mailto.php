@@ -67,13 +67,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 		wp_enqueue_script('form-textcomplete');
 		wp_localize_script('form-textcomplete', 'textcomplete_ajax_params', array_keys($_template_fields));
 		$this->render_widget_form($instance);
-
-		?>
-
-
-
-
-	<?php }
+	}
 
 	public function update( $new_instance, $old_instance ) 
 	{
