@@ -107,12 +107,6 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 	}
 
-	private function initialize_fields() 
-	{
-		$fields = array();
-		$fields = array_merge($fields, wp_get_current_user()["data"]);
-	}
-
 	// Render widget with Twig template. Used by widget().
 	private function render_widget( $fields ) 
 	{
