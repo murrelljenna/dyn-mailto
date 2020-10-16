@@ -78,9 +78,10 @@ class Dyn_Mailto_Widget extends WP_Widget
 	public function update( $new_instance, $old_instance ) 
 	{
 		$instance = $old_instance;
-		$instance['to']	   = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';  
-		$instance['subject']  = isset($new_instance['subject']) ? wp_strip_all_tags($new_instance['subject']) : '';  
-		$instance['body']	   = isset($new_instance['body']) ? wp_strip_all_tags($new_instance['body']) : '';  
+
+		$instance['to']	= isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';
+		$instance['subject'] = isset($new_instance['subject']) ? wp_strip_all_tags($new_instance['subject']) : '';
+		$instance['body'] = isset($new_instance['body']) ? wp_strip_all_tags($new_instance['body']) : ''; 
 		return $new_instance;
 	}
 
@@ -156,11 +157,11 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 	private function var_error_log( $object=null )
 	{
-		ob_start();					// start buffer capture
-		var_dump($object);		   // dump the values
-		$contents = ob_get_contents(); // put the buffer into a variable
-		ob_end_clean();				// end capture
-		error_log($contents);		// log contents of the result of var_dump( $object )
+		ob_start();
+		var_dump($object);
+		$contents = ob_get_contents();
+		ob_end_clean();
+		error_log($contents);
 	}
 
 }
