@@ -45,15 +45,6 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 	public function form( $instance ) 
 	{
-
-		$mailto = array(
-		'to' => '',
-		'cc' => '',
-		'bcc' => '',
-		'subject' => '',
-		'body' => '',
-		);
-		
 		wp_enqueue_script('jquery-ui-autocomplete');
 		wp_enqueue_script('jquery-ui-widget');
 		wp_enqueue_script('jquery-ui-menu');
@@ -131,9 +122,9 @@ class Dyn_Mailto_Widget extends WP_Widget
 			'body' => esc_attr($this->get_field_name('body')),
 			),
 			'field_value' => array(
-			'to' => esc_attr($instance['to']),
-			'subject' => esc_attr($instance['subject']),
-			'body' => esc_attr($instance['body']),
+			'to' => esc_attr(isset($instance['to']) ? $instance['to'] : ''),
+			'subject' => esc_attr(isset($instance['subject']) ? $instance['subject'] : ''),
+			'body' => esc_attr(isset($instance['body']) ? $instance['body'] : ''),
 			),
 		);
 
@@ -151,7 +142,6 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 }
 
-// Register the widget
 function my_register_custom_widget() 
 {
 	register_widget('Dyn_Mailto_Widget');

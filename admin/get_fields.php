@@ -2,7 +2,7 @@
 
 $wp_user = wp_get_current_user()->data;
 
-include_once dirname(__FILE__) . "/field_helpers.php";
+require_once dirname(__FILE__) . "/field_helpers.php";
 
 return array(
 	'user_id' => $wp_user->ID,
