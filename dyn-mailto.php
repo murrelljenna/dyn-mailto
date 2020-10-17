@@ -59,7 +59,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 		wp_enqueue_script('jquery-ui-menu');
 		wp_enqueue_script('jquery-ui-position');
 
-		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
+		$_template_fields = require "$this->_plugin_dir_path/admin/get_fields.php";
 
 		wp_register_script('form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/js/form_textcomplete.js", array(), null, false);
 
@@ -82,7 +82,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 	{
 
 		$this->_twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-		$sandbox_options = include "$this->_plugin_dir_path/admin/get_sandbox_options.php";
+		$sandbox_options = require "$this->_plugin_dir_path/admin/get_sandbox_options.php";
 		$this->_twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
 		$template = array(
@@ -91,7 +91,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 		'body' => $this->_twig->createTemplate($instance['body'])
 		);
 
-		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
+		$_template_fields = require "$this->_plugin_dir_path/admin/get_fields.php";
 
 		// Run templating
 		$widget_fields = array(
