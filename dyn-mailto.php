@@ -40,7 +40,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 		/* Load twig */
 
 		$this->_twig_loader = new \Twig\Loader\FilesystemLoader("$this->_plugin_dir_path/templates");
-		$this->_twig = new \Twig\Environment($this->_twig_loader, ['strict_variables' => false]);
+		$this->_twig = new \Twig\Environment($this->_twig_loader);
 	}
 
 	public function form( $instance ) 
@@ -61,7 +61,7 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 		$_template_fields = include "$this->_plugin_dir_path/admin/get_fields.php";
 
-		wp_register_script('form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/public/form_textcomplete.js", array(), null, false);
+		wp_register_script('form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/js/form_textcomplete.js", array(), null, false);
 
 		wp_enqueue_script('form-textcomplete');
 		wp_localize_script('form-textcomplete', 'textcomplete_ajax_params', array_keys($_template_fields));
