@@ -15,6 +15,10 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class Dyn_Mailto_Widget extends WP_Widget
 {
 	private $_template_fields = array();
