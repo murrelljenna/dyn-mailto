@@ -64,15 +64,16 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	];
 
 	var TextareaHelper = function (elem) {
-	if (elem.nodeName.toLowerCase() !== 'textarea') return;
-	this.$text = $(elem);
-	this.$mirror = $('<div/>').css({ 'position'	: 'absolute'
-									, 'overflow'	: 'auto'
-									, 'white-space' : 'pre-wrap'
-									, 'word-wrap'	: 'break-word'
-									, 'top'		 : 0
-									, 'left'		: -9999
-									}).insertAfter(this.$text);
+		if (elem.nodeName.toLowerCase() !== 'textarea') return;
+		this.$text = $(elem);
+		this.$mirror = $('<div/>').css({
+			'position' : 'absolute', 
+			'overflow' : 'auto',
+			'white-space' : 'pre-wrap',
+			'word-wrap' : 'break-word',
+			'top' : 0,
+			'left' : -9999
+		}).insertAfter(this.$text);
 	};
 
 	(function () {
