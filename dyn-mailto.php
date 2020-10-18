@@ -15,9 +15,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined('WPINC') || die;
 
 class Dyn_Mailto_Widget extends WP_Widget
 {
@@ -146,8 +144,8 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 }
 
-function my_register_custom_widget() 
+function register_dyn_mailto_widget() 
 {
 	register_widget('Dyn_Mailto_Widget');
 }
-add_action('widgets_init', 'my_register_custom_widget');
+add_action('widgets_init', 'register_dyn_mailto_widget');

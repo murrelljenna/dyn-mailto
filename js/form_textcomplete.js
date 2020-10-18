@@ -82,8 +82,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		// Copy styles.
 		var styles = {};
 		for (var i = 0, style; style = mirrorStyles[i]; i++) {
-		styles[style] = this.$text.css(style);
+			styles[style] = this.$text.css(style);
 		}
+
 		this.$mirror.css(styles).empty();
 		
 		// Update content and insert caret.
