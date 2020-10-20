@@ -179,10 +179,8 @@ jQuery(function() {
 			return split(term).pop().substring(2).trim();
 		}
 
-
 		jQuery(".widefat")
 
-		// Create the autocomplete box
 		.autocomplete({
 			minLength : 0,
 			autoFocus : true,
@@ -242,6 +240,7 @@ jQuery(function() {
 				my : "left top",
 				at : posString
 			});
-		});
+
+		}).autogrow({vertical: true, horizontal: false, flickering: false});
 	});
 });
