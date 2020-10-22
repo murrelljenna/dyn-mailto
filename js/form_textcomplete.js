@@ -240,7 +240,6 @@ jQuery(function() {
 				my : "left top",
 				at : posString
 			});
-
-		}).autogrow({vertical: true, horizontal: false, flickering: false});
+		});
 	});
 });
