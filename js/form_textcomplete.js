@@ -163,10 +163,34 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 }));
 
+	jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
+		_create: function() {
+			this._super();
+			this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+		},
+		_renderMenu: function( ul, items ) {
+			var that = this,
+				currentCategory = "";
+			jQuery.each( items, function( index, item ) {
+				var li;
+				if ( item.category != currentCategory ) {
+					console.log(item);
+					ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+					currentCategory = item.category;
+				}
+				li = that._renderItemData( ul, item );
+				if ( item.category ) {
+					li.attr( "aria-label", item.category + " : " + item.label );
+				}
+			});
+		}
+	});
+
 jQuery(function() {
 	jQuery("document").ready(function() {
 		// The tags we will be looking for
 		var field_names = textcomplete_ajax_params;
+		console.log(field_names);
 		// State variable to keep track of which category we are in
 		var tagState = field_names;
 
@@ -181,7 +205,7 @@ jQuery(function() {
 
 		jQuery(".widefat")
 
-		.autocomplete({
+		.catcomplete({
 			minLength : 0,
 			autoFocus : true,
 			source : function(request, response) {
@@ -189,14 +213,14 @@ jQuery(function() {
 				var lastEntry = extractLast(request.term);
 
 				var filteredArray = jQuery.map(tagState, function(item) {
-					if (item.indexOf(lastEntry) === 0) {
-						return item;
+					if (item.label.indexOf(lastEntry) === 0) {
+						return { label: item.label, category: item.category };
 					} else {
 						return null;
 					}
 				});
 				
-				// delegate back to autocomplete, but extract the last term
+				// delegate back to catcomplete, but extract the last term
 				response(jQuery.ui.autocomplete.filter(filteredArray, lastEntry));
 			},
 			focus : function() {
@@ -216,7 +240,7 @@ jQuery(function() {
 			}
 		}).on("keydown", function(event) {
 			// don't navigate away from the field on tab when selecting an item
-			if (event.keyCode === jQuery.ui.keyCode.TAB /** && jQuery(this).data("ui-autocomplete").menu.active **/) {
+			if (event.keyCode === jQuery.ui.keyCode.TAB /** && jQuery(this).data("ui-catcomplete").menu.active **/) {
 				event.preventDefault();
 				return;
 			}
@@ -227,16 +251,16 @@ jQuery(function() {
 			const openBraces = value.replace(/{{[ a-zA-Z0-9_]+}}/g, match => match.replace(/./g, '*')).indexOf("{{")
 
 			if (openBraces >= 0) {
-				jQuery(this).autocomplete( "option", "disabled", false );
+				jQuery(this).catcomplete( "option", "disabled", false );
 			} else {
-				jQuery(this).autocomplete( "option", "disabled", true );
+				jQuery(this).catcomplete( "option", "disabled", true );
 			}
 
 			// Code to position and move the selection box as the user types
 			var newY = jQuery(this).textareaHelper('caretPos').top + (parseInt(jQuery(this).css('font-size'), 10) * 1.5);
 			var newX = jQuery(this).textareaHelper('caretPos').left;
 			var posString = "left+" + newX + "px top+" + newY + "px";
-			jQuery(this).autocomplete("option", "position", {
+			jQuery(this).catcomplete("option", "position", {
 				my : "left top",
 				at : posString
 			});
