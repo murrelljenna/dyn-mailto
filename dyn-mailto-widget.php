@@ -47,9 +47,9 @@ class Dyn_Mailto_Widget extends WP_Widget
 
 
 		// Autogrow textarea fields.
-		wp_register_script('dyn-mailto-form-autogrow-dist', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/includes/autosize.min.js", array(), null, false);
-		wp_register_script('dyn-mailto-form-textcomplete', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/js/form_textcomplete.js", array(), null, false);
-		wp_register_script('dyn-mailto-form-autogrow', "https://mabelleneighbours.com/wp-content/plugins/dyn-mailto/js/form_autogrow.js", array(), null, false);
+		wp_register_script('dyn-mailto-form-autogrow-dist', plugins_url('dyn-mailto/includes/autosize.min.js'), array(), null, false);
+		wp_register_script('dyn-mailto-form-textcomplete', plugins_url('dyn-mailto/js/form_textcomplete.js'), array(), null, false);
+		wp_register_script('dyn-mailto-form-autogrow', plugins_url('dyn-mailto/js/form_autogrow.js'), array(), null, false);
 
 		wp_enqueue_script('dyn-mailto-form-autogrow-dist');
 		wp_enqueue_script('dyn-mailto-form-textcomplete');
