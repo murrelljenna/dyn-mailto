@@ -190,7 +190,6 @@ jQuery(function() {
 	jQuery("document").ready(function() {
 		// The tags we will be looking for
 		var field_names = textcomplete_ajax_params;
-		console.log(field_names);
 		// State variable to keep track of which category we are in
 		var tagState = field_names;
 
