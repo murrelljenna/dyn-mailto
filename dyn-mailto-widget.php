@@ -28,10 +28,10 @@ class Dyn_Mailto_Widget extends WP_Widget
 		$this->_twig_loader = new \Twig\Loader\FilesystemLoader("$this->_plugin_dir_path/templates");
 		$this->_twig = new \Twig\Environment($this->_twig_loader);
 
-		require_once "$this->_plugin_dir_path/admin/get_fields.php";
+		require_once "$this->_plugin_dir_path/admin/field_loader.php";
 
-		$this->_template_fields = Dyn_Mailto_Template_Fields::get_template_fields();
-		$this->_autocomplete_fields = Dyn_Mailto_Template_Fields::get_autocomplete_fields();
+		$this->_template_fields = Dyn_Mailto_Field_Loader::get_template_fields();
+		$this->_autocomplete_fields = Dyn_Mailto_Field_Loader::get_autocomplete_fields();
 	}
 
 	public function form( $instance ) 

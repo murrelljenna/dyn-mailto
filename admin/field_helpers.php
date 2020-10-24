@@ -1,6 +1,6 @@
 <?php
 
-class Field_Helpers
+class Dyn_Mailto_Field_Helpers
 {
 	public static function get_user_ip() {
 		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {

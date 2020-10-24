@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . "/field_helpers.php";
 
-class Dyn_Mailto_Template_Fields {
+class Dyn_Mailto_Field_Loader {
 	private static $_fields;
 
 	public static function init_static_fields() {
@@ -16,7 +16,7 @@ class Dyn_Mailto_Template_Fields {
 		'user_url' => array('value' => ($wp_user instanceof WP_User) ? $wp_user->user_url : '', 'category' => 'User'),
 		'user_registered' => array('value' => ($wp_user instanceof WP_User) ? $wp_user->user_registered : '', 'category' => 'User'),
 		'user_status' => array('value' => ($wp_user instanceof WP_User) ? $wp_user->user_status : '', 'category' => 'User'),
-		'user_ip' => array('value' => Field_Helpers::get_user_ip(), 'category' => 'User'),
+		'user_ip' => array('value' => Dyn_Mailto_Field_Helpers::get_user_ip(), 'category' => 'User'),
 		'site_name' => array('value' => get_bloginfo('name'), 'category' => 'Site'),
 		'site_description' => array('value' => get_bloginfo('description'), 'category' => 'Site'),
 		'site_url' => array('value' => get_bloginfo('url'), 'category' => 'Site'),
@@ -52,6 +52,6 @@ class Dyn_Mailto_Template_Fields {
 	}
 }
 
-Dyn_Mailto_Template_Fields::init_static_fields();
+Dyn_Mailto_Field_Loader::init_static_fields();
 
 ?>
