@@ -42,18 +42,15 @@ class Dyn_Mailto_Widget extends WP_Widget
 		wp_enqueue_script('jquery-ui-position');
 
 		// Load css
-		wp_register_style('dyn-mailto-widget-form', plugins_url('dyn-mailto/css/widget_form.css'));
-		wp_enqueue_style('dyn-mailto-widget-form');
+		wp_enqueue_style('dyn-mailto-widget-form', plugins_url('dyn-mailto/css/widget_form.css'));
 
+		// Enables autocompletion of template fields in widget textarea.
+		wp_enqueue_script('dyn-mailto-form-textcomplete', plugins_url('dyn-mailto/js/form_textcomplete.js'), array(), null, false);
 
-		// Autogrow textarea fields.
-		wp_register_script('dyn-mailto-form-autogrow-dist', plugins_url('dyn-mailto/includes/autosize.min.js'), array(), null, false);
-		wp_register_script('dyn-mailto-form-textcomplete', plugins_url('dyn-mailto/js/form_textcomplete.js'), array(), null, false);
-		wp_register_script('dyn-mailto-form-autogrow', plugins_url('dyn-mailto/js/form_autogrow.js'), array(), null, false);
+		// Enables continual expansion of widget textarea without scrollbars.
+		wp_enqueue_script('dyn-mailto-form-autogrow-dist', plugins_url('dyn-mailto/includes/autosize.min.js'), array(), null, false);
+		wp_enqueue_script('dyn-mailto-form-autogrow', plugins_url('dyn-mailto/js/form_autogrow.js'), array(), null, false);
 
-		wp_enqueue_script('dyn-mailto-form-autogrow-dist');
-		wp_enqueue_script('dyn-mailto-form-textcomplete');
-		wp_enqueue_script('dyn-mailto-form-autogrow');
 		wp_localize_script('dyn-mailto-form-textcomplete', 'textcomplete_ajax_params', $this->_autocomplete_fields);
 		$this->render_widget_form($instance);
 	}
