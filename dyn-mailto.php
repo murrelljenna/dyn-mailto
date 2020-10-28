@@ -19,6 +19,8 @@ defined('WPINC') || die;
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/dyn-mailto-widget.php';
 
+!defined('PLUGIN_DIR') && define('PLUGIN_DIR', dirname(__FILE__));
+
 function register_dyn_mailto_widget() 
 {
     register_widget('jmurrell\DynMailto\Widget');

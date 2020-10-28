@@ -25,6 +25,12 @@ class Field_Loader
         'site_description' => array('value' => get_bloginfo('description'), 'category' => 'Site'),
         'site_url' => array('value' => get_bloginfo('url'), 'category' => 'Site'),
         'admin_email' => array('value' => get_bloginfo('admin_email'), 'category' => 'Site'),
+        'location_country' => array('value' => Field_Helpers::get_user_location()['country_name'], 'category' => 'Location'),
+        'location_country_code' => array('value' => Field_Helpers::get_user_location()['country_code'], 'category' => 'Location'),
+        'location_region' => array('value' => Field_Helpers::get_user_location()['region_name'], 'category' => 'Location'),
+        'location_region_code' => array('value' => Field_Helpers::get_user_location()['region_code'], 'category' => 'Location'),
+        'location_city' => array('value' => Field_Helpers::get_user_location()['city'], 'category' => 'Location'),
+        'location_time_zone' => array('value' => Field_Helpers::get_user_location()['time_zone'], 'category' => 'Location'),
         );
     }
 
@@ -37,6 +43,7 @@ class Field_Loader
                 $ret_fields[$k] = $v['value'];
             }
         );
+
         return $ret_fields;
     }
 
