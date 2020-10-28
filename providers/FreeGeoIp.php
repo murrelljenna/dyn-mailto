@@ -50,7 +50,6 @@
             
             // build API url
             $url = $this::API_BASE_URL . '/' . $this->responseFormat . '/' . $ip;
-            var_dump($url);
             
             // CURL handler
             $curl = curl_init();
