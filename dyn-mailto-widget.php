@@ -65,7 +65,7 @@ class Widget extends \WP_Widget
     {
         $instance = $old_instance;
 
-        $instance['display'] = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['display']) : '';
+        $instance['display'] = isset($new_instance['display']) ? wp_strip_all_tags($new_instance['display']) : '';
         $instance['to'] = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';
         $instance['cc'] = isset($new_instance['cc']) ? wp_strip_all_tags($new_instance['cc']) : '';
         $instance['bcc'] = isset($new_instance['bcc']) ? wp_strip_all_tags($new_instance['bcc']) : '';
@@ -123,6 +123,7 @@ class Widget extends \WP_Widget
         'display' => esc_attr($this->get_field_id('display')),
         'to' => esc_attr($this->get_field_id('to')),
         'cc' => esc_attr($this->get_field_id('cc')),
+        'bcc' => esc_attr($this->get_field_id('bcc')),
         'subject' => esc_attr($this->get_field_id('subject')),
         'body' => esc_attr($this->get_field_id('body')),
         ),
@@ -130,6 +131,7 @@ class Widget extends \WP_Widget
         'display' => esc_attr($this->get_field_name('display')),
         'to' => esc_attr($this->get_field_name('to')),
         'cc' => esc_attr($this->get_field_name('cc')),
+        'bcc' => esc_attr($this->get_field_name('bcc')),
         'subject' => esc_attr($this->get_field_name('subject')),
         'body' => esc_attr($this->get_field_name('body')),
         ),
@@ -137,6 +139,7 @@ class Widget extends \WP_Widget
         'display' => esc_attr(isset($instance['display']) ? $instance['display'] : ''),
         'to' => esc_attr(isset($instance['to']) ? $instance['to'] : ''),
         'cc' => esc_attr(isset($instance['cc']) ? $instance['cc'] : ''),
+        'bcc' => esc_attr(isset($instance['bcc']) ? $instance['bcc'] : ''),
         'subject' => esc_attr(isset($instance['subject']) ? $instance['subject'] : ''),
         'body' => esc_attr(isset($instance['body']) ? $instance['body'] : ''),
         ),
