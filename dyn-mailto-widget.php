@@ -65,7 +65,10 @@ class Widget extends \WP_Widget
     {
         $instance = $old_instance;
 
-        $instance['to']    = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';
+        $instance['display'] = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['display']) : '';
+        $instance['to'] = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';
+        $instance['cc'] = isset($new_instance['cc']) ? wp_strip_all_tags($new_instance['cc']) : '';
+        $instance['bcc'] = isset($new_instance['bcc']) ? wp_strip_all_tags($new_instance['bcc']) : '';
         $instance['subject'] = isset($new_instance['subject']) ? wp_strip_all_tags($new_instance['subject']) : '';
         $instance['body'] = isset($new_instance['body']) ? wp_strip_all_tags($new_instance['body']) : ''; 
         return $new_instance;
@@ -79,15 +82,20 @@ class Widget extends \WP_Widget
         $this->_twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
         $template = array(
+        'display' => $this->_twig->createTemplate($instance['display']),
         'to' => $this->_twig->createTemplate($instance['to']),
+        'cc' => $this->_twig->createTemplate($instance['cc']),
+        'bcc' => $this->_twig->createTemplate($instance['bcc']),
         'subject' => $this->_twig->createTemplate($instance['subject']),
         'body' => $this->_twig->createTemplate($instance['body'])
         );
 
         // Run templating
         $widget_fields = array(
-        'display' => 't',
+        'display' => $template['display']->render($this->_template_fields),
         'to' => $template['to']->render($this->_template_fields),
+        'cc' => $template['cc']->render($this->_template_fields),
+        'bcc' => $template['bcc']->render($this->_template_fields),
         'subject' => $template['subject']->render($this->_template_fields),
         'body' => $template['body']->render($this->_template_fields),
         );
@@ -112,17 +120,23 @@ class Widget extends \WP_Widget
 
         $fields = array(
         'field_id' => array(
+        'display' => esc_attr($this->get_field_id('display')),
         'to' => esc_attr($this->get_field_id('to')),
+        'cc' => esc_attr($this->get_field_id('cc')),
         'subject' => esc_attr($this->get_field_id('subject')),
         'body' => esc_attr($this->get_field_id('body')),
         ),
         'field_name' => array(
+        'display' => esc_attr($this->get_field_name('display')),
         'to' => esc_attr($this->get_field_name('to')),
+        'cc' => esc_attr($this->get_field_name('cc')),
         'subject' => esc_attr($this->get_field_name('subject')),
         'body' => esc_attr($this->get_field_name('body')),
         ),
         'field_value' => array(
+        'display' => esc_attr(isset($instance['display']) ? $instance['display'] : ''),
         'to' => esc_attr(isset($instance['to']) ? $instance['to'] : ''),
+        'cc' => esc_attr(isset($instance['cc']) ? $instance['cc'] : ''),
         'subject' => esc_attr(isset($instance['subject']) ? $instance['subject'] : ''),
         'body' => esc_attr(isset($instance['body']) ? $instance['body'] : ''),
         ),
