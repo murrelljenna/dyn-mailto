@@ -36,6 +36,7 @@ function render_docs() {
     echo '<div class="wrap">';
 
     // To do: render markdown documentation from here.
+    readfile(PLUGIN_DIR . "/templates/docs.html");
 
     echo '</div>';
 }
