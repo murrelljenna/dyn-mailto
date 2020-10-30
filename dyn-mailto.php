@@ -36,6 +36,7 @@ function render_docs() {
     echo '<div class="wrap">';
 
     // To do: render markdown documentation from here.
+    wp_enqueue_style('dyn-mailto-docs', plugins_url('dyn-mailto/css/docs.css'));
     readfile(PLUGIN_DIR . "/templates/docs.html");
 
     echo '</div>';

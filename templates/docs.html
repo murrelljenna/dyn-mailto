@@ -1,8 +1,8 @@
 <h1>Dyn-Mailto</h1>
 <h2>About Dynamic Mailto</h2>
-<p>The dyn-mailto Wordpress plugin enables you to create mailto links that load differently depending on who visits the page, where they visit the page from, where on the site they see the link, and more. You, the user of this plugin, writes a template that, when it comes time to render to someone visiting your website, has the appropriate fields substituted where ever you've designated.</p>
+<p class="dyn-mailto-docs">The dyn-mailto Wordpress plugin enables you to create mailto links that load differently depending on who visits the page, where they visit the page from, where on the site they see the link, and more. You, the user of this plugin, writes a template that, when it comes time to render to someone visiting your website, has the appropriate fields substituted where ever you've designated.</p>
 
-<p>
+<p class="dyn-mailto-docs">
     This plugin allows you to write dynamic mailto links that can can access information about:
     <ul>
         <li>the user's IP address and geographic location, including country, region and city,</li>
@@ -11,20 +11,19 @@
         <li>the Wordpress post that the link is viewed on,</li>
     </ul>
 </p>
+<p class="dyn-mailto-docs">
     In addition to including relevant data in the link, dynamic mailto links can incorporate useful logical constructs, including if statements, loops and randomizing fields.
-<p>
-
 </p>
 
 <h2>Writing Your Mailto</h2>
-<p>To create dynamic mailto links on your Wordpress site, use the Dynamic Mailto widget, available on under Appearance-&lt;Widgets. After adding the widget to your location of choice, you will be able to customize the display text of the link, as well as the various fields of the mailto, including the to, subject and body fields. Each of these textareas corresponds directly with all the components of a mailto link,.</p>
-<p>
-    Dynamic mailto widgets are are created using the <a href="https://twig.symfony.com/doc/2.x/">Twig templating language</a>. All data fields are surrounded with double curly bracket tags.<br><br>
+<p class="dyn-mailto-docs">To create dynamic mailto links on your Wordpress site, use the Dynamic Mailto widget, available on under Appearance-&lt;Widgets. After adding the widget to your location of choice, you will be able to customize the display text of the link, as well as the various fields of the mailto, including the to, subject and body fields. Each of these textareas corresponds directly with all the components of a mailto link,.</p>
+<p class="dyn-mailto-docs">
+<h3>Using Data Fields</h3>
+    <p class="dyn-mailto-docs">Dynamic mailto widgets are are created using the <a href="https://twig.symfony.com/doc/2.x/">Twig templating language</a>. All data fields are surrounded with double curly bracket tags.</p><br>
 
-    {{ location_country }}
+    <i>{{ location_country }}</i>
 
     <br><br>
 
-    To ease writing your widget, a dropdown menu will appear wherever you have two open curly brackets. This menu will provide a list of all available fields.
+    <p class="dyn-mailto-docs">To ease writing your widget, a dropdown menu will appear wherever you have two open curly brackets. This menu will provide a list of all available fields for your dynamic mailto link.</p>
 </p>
-<h3>Using Data Fields</h3>
