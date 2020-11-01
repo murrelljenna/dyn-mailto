@@ -24,6 +24,10 @@ class Field_Helpers
         $ip_info = new FreeGeoIp('json');
         return json_decode($ip_info->fetch(self::get_user_IP()), true);
     }
+
+    public static function get_date() {
+        getdate();
+    }
 }
 
 ?>

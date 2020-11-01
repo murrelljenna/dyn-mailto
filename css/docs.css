@@ -1,3 +1,8 @@
 p.dyn-mailto-docs {
     max-width: 800px;
 }
+
+ul {
+    list-style-type: circle;
+    padding: 1em;
+}

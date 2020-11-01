@@ -1,6 +1,6 @@
 <h1>Dyn-Mailto</h1>
 <h2>About Dynamic Mailto</h2>
-<p class="dyn-mailto-docs">The dyn-mailto Wordpress plugin enables you to create mailto links that load differently depending on who visits the page, where they visit the page from, where on the site they see the link, and more. You, the user of this plugin, writes a template that, when it comes time to render to someone visiting your website, has the appropriate fields substituted where ever you've designated.</p>
+<p class="dyn-mailto-docs">The dyn-mailto Wordpress plugin enables you to create mailto links that load differently depending on who visits the page, where they visit the page from, where on the site they see the link, and more. You create a mailto link by writing a template that, when it comes time to render to someone visiting your website, has the appropriate fields substituted where ever you've designated.</p>
 
 <p class="dyn-mailto-docs">
     This plugin allows you to write dynamic mailto links that can access information about:
@@ -16,7 +16,7 @@
 </p>
 
 <h2>Writing Your Mailto</h2>
-<p class="dyn-mailto-docs">To create dynamic mailto links on your Wordpress site, use the Dynamic Mailto widget, available on under Appearance-&lt;Widgets. After adding the widget to your location of choice, you will be able to customize the display text of the link, as well as the various fields of the mailto, including the to, subject and body fields. Each of these textareas corresponds directly with all the components of a mailto link.</p>
+<p class="dyn-mailto-docs">To create dynamic mailto links on your Wordpress site, use the Dynamic Mailto widget, available on under Appearance-&gt;Widgets. After adding the widget to your location of choice, you will be able to customize the display text of the link, as well as the various fields of the mailto, including the to, subject and body fields. Each of these textareas corresponds directly with all the components of a mailto link.</p>
 <p class="dyn-mailto-docs">
 <h3>Using Data Fields</h3>
     <p class="dyn-mailto-docs">Dynamic mailto widgets are are created using the <a href="https://twig.symfony.com/doc/2.x/">Twig templating language</a>. All data fields are surrounded with double curly bracket tags.</p><br>
@@ -33,28 +33,29 @@
     &emsp;This sentence will only appear in the mailto link if the person loading it is from canada.<br>
     {% endif %}<br><br>
 
-    <p class="dyn-mailto-docs">A list of all logical fields available to you when writing your dynamic mailto link is listed below.</p>
-    <dl>
-        <dt><a href="https://twig.symfony.com/doc/2.x/Tags/index.html">Tags</a></dt>
-        <dd><a href="https://twig.symfony.com/doc/3.x/tags/if.html">if</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/tags/for.html">for</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/tags/apply.html">apply</a></dd>
+    <p class="dyn-mailto-docs">A list of all logical fields available to you when writing your dynamic mailto link is listed below, with relevant twig documentation.
+        <dl>
+            <dt>Tags</dt>
+            <dd><a href="https://twig.symfony.com/doc/3.x/tags/if.html">if</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/tags/for.html">for</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/tags/apply.html">apply</a></dd>
 
-        <dt><a href="https://twig.symfony.com/doc/3.x/filters/index.html">Filters</a></dt>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/abs.html">abs</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/capitalize.html">capitalize</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/date.html">date</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/upper.html">upper</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/lower.html">lower</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/title.html">title</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/split.html">split</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/filters/round.html">round</a></dd>
+            <dt>Filters</dt>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/abs.html">abs</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/capitalize.html">capitalize</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/date.html">date</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/upper.html">upper</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/lower.html">lower</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/title.html">title</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/split.html">split</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/filters/round.html">round</a></dd>
 
-        <dt><a href="https://twig.symfony.com/doc/3.x/functions/index.html">Functions</a></dt>
-        <dd><a href="https://twig.symfony.com/doc/3.x/functions/random.html">random</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/functions/range.html">range</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/functions/date.html">date</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/functions/min.html">min</a></dd>
-        <dd><a href="https://twig.symfony.com/doc/3.x/functions/max.html">max</a></dd>
-    <dl>
-</p>
+            <dt>Functions</dt>
+            <dd><a href="https://twig.symfony.com/doc/3.x/functions/random.html">random</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/functions/range.html">range</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/functions/date.html">date</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/functions/min.html">min</a></dd>
+            <dd><a href="https://twig.symfony.com/doc/3.x/functions/max.html">max</a></dd>
+        <dl>
+    </p>
+    <p>Questions and suggestions can be sent to murrelljenna@gmail.com</p>
