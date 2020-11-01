@@ -31,6 +31,14 @@ class Field_Loader
         'location_region_code' => array('value' => Field_Helpers::get_user_location()['region_code'], 'category' => 'Location'),
         'location_city' => array('value' => Field_Helpers::get_user_location()['city'], 'category' => 'Location'),
         'location_time_zone' => array('value' => Field_Helpers::get_user_location()['time_zone'], 'category' => 'Location'),
+        'date_month' => array('value' => getdate()['month'], 'category' => 'Date'),
+        'date_month_no' => array('value' => strval(getdate()['mon']), 'category' => 'Date'),
+        'date_year' => array('value' => getdate()['year'], 'category' => 'Date'),
+        'date_weekday' => array('value' => getdate()['weekday'], 'category' => 'Date'),
+        'date_yearday' => array('value' => getdate()['yday'], 'category' => 'Date'),
+        'date_hours' => array('value' => getdate()['hours'], 'category' => 'Date'),
+        'date_minutes' => array('value' => getdate()['minutes'], 'category' => 'Date'),
+        'date_seconds' => array('value' => getdate()['seconds'], 'category' => 'Date'),
         );
     }
 
