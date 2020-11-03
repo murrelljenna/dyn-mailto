@@ -19,7 +19,7 @@ class Field_Helpers
 
     public static function get_user_location()
     {
-        require_once PLUGIN_DIR . ('/providers/FreeGeoIp.php');
+        require_once DYN_MAILTO_PLUGIN_DIR . ('/providers/FreeGeoIp.php');
 
         $ip_info = new FreeGeoIp('json');
 

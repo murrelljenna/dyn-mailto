@@ -19,7 +19,7 @@ defined('WPINC') || die;
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/dyn-mailto-widget.php';
 
-!defined('PLUGIN_DIR') && define('PLUGIN_DIR', dirname(__FILE__));
+!defined('DYN_MAILTO_PLUGIN_DIR') && define('DYN_MAILTO_PLUGIN_DIR', dirname(__FILE__));
 
 /* Register widget */
 
@@ -37,7 +37,7 @@ function render_docs() {
 
     // To do: render markdown documentation from here.
     wp_enqueue_style('dyn-mailto-docs', plugins_url('dyn-mailto/css/docs.css'));
-    readfile(PLUGIN_DIR . "/templates/docs.html");
+    readfile(DYN_MAILTO_PLUGIN_DIR . "/templates/docs.html");
 
     echo '</div>';
 }

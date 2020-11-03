@@ -81,12 +81,12 @@ class Widget extends \WP_Widget
         $this->_twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
 
         $template = array(
-        'display' => $this->_twig->createTemplate($instance['display']),
-        'to' => $this->_twig->createTemplate($instance['to']),
-        'cc' => $this->_twig->createTemplate($instance['cc']),
-        'bcc' => $this->_twig->createTemplate($instance['bcc']),
-        'subject' => $this->_twig->createTemplate($instance['subject']),
-        'body' => $this->_twig->createTemplate($instance['body'])
+        'display' => $this->_twig->createTemplate(esc_attr($instance['display'])),
+        'to' => $this->_twig->createTemplate(esc_attr($instance['to'])),
+        'cc' => $this->_twig->createTemplate(esc_attr($instance['cc'])),
+        'bcc' => $this->_twig->createTemplate(esc_attr($instance['bcc'])),
+        'subject' => $this->_twig->createTemplate(esc_attr($instance['subject'])),
+        'body' => $this->_twig->createTemplate(esc_attr($instance['body']))
         );
 
         // Run templating

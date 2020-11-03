@@ -1,6 +1,6 @@
 Contributors: murrelljenna
 Tags: mailto, link, template, contact, email, dynamic
-Requires at least: 5.3
+Requires at least: 5.5
 Tested up to: 7.2
 Requires PHP: 7.2.5
 Stable tag: 1.0
