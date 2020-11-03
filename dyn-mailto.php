@@ -7,7 +7,7 @@ namespace jmurrell\DynMailto;
  * php version 7.2.24
 
  * Plugin Name: Dynamic Mailto
- * Plugin URI: http://www.wpexplorer.com/create-widget-plugin-wordpress/
+ * Plugin URI: https://github.com/murrelljenna/dyn-mailto
  * Description: Enables templating mailto links on page load.
  * Version: 1.0
  *
