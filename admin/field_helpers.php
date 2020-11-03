@@ -22,7 +22,14 @@ class Field_Helpers
         require_once PLUGIN_DIR . ('/providers/FreeGeoIp.php');
 
         $ip_info = new FreeGeoIp('json');
-        return json_decode($ip_info->fetch(self::get_user_IP()), true);
+
+        try {
+            $response = $ip_info->fetch(self::get_user_IP());
+        } catch (Exception $e) {
+            return '';       
+        }
+
+        return json_decode($response, true);
     }
 }
 
