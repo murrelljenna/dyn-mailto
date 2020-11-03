@@ -65,18 +65,17 @@ class Widget extends \WP_Widget
     {
         $instance = $old_instance;
 
-        $instance['display'] = isset($new_instance['display']) ? wp_strip_all_tags($new_instance['display']) : '';
-        $instance['to'] = isset($new_instance['to']) ? wp_strip_all_tags($new_instance['to']) : '';
-        $instance['cc'] = isset($new_instance['cc']) ? wp_strip_all_tags($new_instance['cc']) : '';
-        $instance['bcc'] = isset($new_instance['bcc']) ? wp_strip_all_tags($new_instance['bcc']) : '';
-        $instance['subject'] = isset($new_instance['subject']) ? wp_strip_all_tags($new_instance['subject']) : '';
-        $instance['body'] = isset($new_instance['body']) ? wp_strip_all_tags($new_instance['body']) : ''; 
+        $instance['display'] = isset($new_instance['display']) ? sanitize_textarea_field($new_instance['display']) : '';
+        $instance['to'] = isset($new_instance['to']) ? sanitize_textarea_field($new_instance['to']) : '';
+        $instance['cc'] = isset($new_instance['cc']) ? sanitize_textarea_field($new_instance['cc']) : '';
+        $instance['bcc'] = isset($new_instance['bcc']) ? sanitize_textarea_field($new_instance['bcc']) : '';
+        $instance['subject'] = isset($new_instance['subject']) ? sanitize_textarea_field($new_instance['subject']) : '';
+        $instance['body'] = isset($new_instance['body']) ? sanitize_textarea_field($new_instance['body']) : ''; 
         return $new_instance;
     }
 
     public function widget( $args, $instance ) 
     {
-
         $this->_twig->addExtension(new \Twig\Extension\StringLoaderExtension());
         $sandbox_options = include_once "$this->_plugin_dir_path/admin/get_sandbox_options.php";
         $this->_twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
@@ -136,12 +135,12 @@ class Widget extends \WP_Widget
         'body' => esc_attr($this->get_field_name('body')),
         ),
         'field_value' => array(
-        'display' => esc_attr(isset($instance['display']) ? $instance['display'] : ''),
-        'to' => esc_attr(isset($instance['to']) ? $instance['to'] : ''),
-        'cc' => esc_attr(isset($instance['cc']) ? $instance['cc'] : ''),
-        'bcc' => esc_attr(isset($instance['bcc']) ? $instance['bcc'] : ''),
-        'subject' => esc_attr(isset($instance['subject']) ? $instance['subject'] : ''),
-        'body' => esc_attr(isset($instance['body']) ? $instance['body'] : ''),
+        'display' => isset($instance['display']) ? $instance['display'] : '',
+        'to' => isset($instance['to']) ? $instance['to'] : '',
+        'cc' => isset($instance['cc']) ? $instance['cc'] : '',
+        'bcc' => isset($instance['bcc']) ? $instance['bcc'] : '',
+        'subject' => isset($instance['subject']) ? $instance['subject'] : '',
+        'body' => isset($instance['body']) ? $instance['body'] : '',
         ),
         );
 
