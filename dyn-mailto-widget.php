@@ -10,6 +10,10 @@ class Widget extends \WP_Widget
     private $_autocomplete_fields = array();
     private $_plugin_dir_path;
 
+    /* Error state for form entry */
+
+    private $_syntax_error = false;
+    
     /* Twig */
 
     private $_twig_loader;
@@ -63,8 +67,22 @@ class Widget extends \WP_Widget
 
     public function update( $new_instance, $old_instance ) 
     {
-        $instance = $old_instance;
+        /* Check the syntax of entered values before saving. */
 
+        try {
+            isset($new_instance['display']) && $this->render_from_string(sanitize_textarea_field($new_instance['display']), $this->_template_fields);
+            isset($new_instance['to']) && $this->render_from_string(sanitize_textarea_field($new_instance['to']), $this->_template_fields);
+            isset($new_instance['cc']) && $this->render_from_string(sanitize_textarea_field($new_instance['cc']), $this->_template_fields);
+            isset($new_instance['bcc']) && $this->render_from_string(sanitize_textarea_field($new_instance['bcc']), $this->_template_fields);
+            isset($new_instance['subject']) && $this->render_from_string(sanitize_textarea_field($new_instance['subject']), $this->_template_fields);
+            isset($new_instance['body']) && $this->render_from_string(sanitize_textarea_field($new_instance['body']), $this->_template_fields); 
+        } catch (\Twig\Error\SyntaxError $e) {
+            /* Leave error message */
+            $this->_syntax_error = true;
+            return false;
+        }
+
+        $instance = $old_instance;
         $instance['display'] = isset($new_instance['display']) ? sanitize_textarea_field($new_instance['display']) : '';
         $instance['to'] = isset($new_instance['to']) ? sanitize_textarea_field($new_instance['to']) : '';
         $instance['cc'] = isset($new_instance['cc']) ? sanitize_textarea_field($new_instance['cc']) : '';
@@ -135,6 +153,7 @@ class Widget extends \WP_Widget
         'body' => esc_attr($this->get_field_name('body')),
         ),
         'field_value' => array(
+        'syntax_error' => $this->_syntax_error,
         'display' => isset($instance['display']) ? $instance['display'] : '',
         'to' => isset($instance['to']) ? $instance['to'] : '',
         'cc' => isset($instance['cc']) ? $instance['cc'] : '',
@@ -145,6 +164,12 @@ class Widget extends \WP_Widget
         );
 
         echo $template->render($fields);
+
+        $_template_fields['syntax_error'] = false;
+    }
+
+    private function render_from_string( $template, $fields ) {
+        return $this->_twig->createTemplate($template)->render($fields);
     }
 
     private function var_error_log( $object=null )

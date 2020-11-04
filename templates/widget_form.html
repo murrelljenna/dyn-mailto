@@ -1,3 +1,11 @@
+{% if field_value.syntax_error %}
+    <div class='notice notice-error'>
+    {% verbatim %} 
+        Syntax Error - Check for unclosed curly '{{' brackets.
+    {% endverbatim %}
+    </div>
+{% endif %}
+
 <p>
 	<label for="{{ field_id.display }}">Display Text</label>
 	<textarea rows="1" class="widefat" id="{{ field_id.display }}" name="{{ field_name.display }}">{{ field_value.display }}</textarea>
