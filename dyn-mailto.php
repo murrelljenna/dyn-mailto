@@ -32,7 +32,8 @@ add_action('widgets_init', 'jmurrell\DynMailto\register_dyn_mailto_widget');
 
 /* Register documentation page */
 
-function render_docs() {
+function render_docs() 
+{
     echo '<div class="wrap">';
 
     // To do: render markdown documentation from here.
@@ -42,20 +43,24 @@ function render_docs() {
     echo '</div>';
 }
 
-add_action( 'admin_menu', function() {
-    add_submenu_page(
-        null,
-        __( 'Documentation', 'textdomain' ),
-        __( 'Documentation', 'textdomain' ),
-        'manage_options',
-        'dyn-mailto-documentation',
-        'jmurrell\DynMailto\render_docs'
-    );
-} );
+add_action(
+    'admin_menu', function () {
+        add_submenu_page(
+            null,
+            __('Documentation', 'textdomain'),
+            __('Documentation', 'textdomain'),
+            'manage_options',
+            'dyn-mailto-documentation',
+            'jmurrell\DynMailto\render_docs'
+        );
+    } 
+);
 
-add_filter('plugin_action_links_'.plugin_basename(__FILE__), function ( $links ) {
-    $links[] = '<a href="' .
-        admin_url( '/?page=dyn-mailto-documentation' ) .
+add_filter(
+    'plugin_action_links_'.plugin_basename(__FILE__), function ( $links ) {
+        $links[] = '<a href="' .
+        admin_url('/?page=dyn-mailto-documentation') .
         '">' . __('Documentation') . '</a>';
-    return $links;
-});
+        return $links;
+    }
+);

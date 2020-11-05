@@ -2,7 +2,7 @@
 
 namespace jmurrell\DynMailto;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 class Widget extends \WP_Widget
 {
@@ -168,7 +168,8 @@ class Widget extends \WP_Widget
         $_template_fields['syntax_error'] = false;
     }
 
-    private function render_from_string( $template, $fields ) {
+    private function render_from_string( $template, $fields ) 
+    {
         return $this->_twig->createTemplate($template)->render($fields);
     }
 
