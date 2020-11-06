@@ -12,7 +12,7 @@ namespace jmurrell\DynMailto;
  * Version: 1.0
  *
  * @author:  Jenna Murrell
- * @license: MIT
+ * @license: GPLv3
  */
 defined('WPINC') || die;
 
@@ -23,6 +23,11 @@ require __DIR__ . '/dyn-mailto-widget.php';
 
 /* Register widget */
 
+/**
+ * Register dyn-mailto-widget.
+ *
+ * @return void
+ */
 function register_dyn_mailto_widget() 
 {
     register_widget('jmurrell\DynMailto\Widget');
@@ -32,6 +37,11 @@ add_action('widgets_init', 'jmurrell\DynMailto\register_dyn_mailto_widget');
 
 /* Register documentation page */
 
+/**
+ * Renders documentation.
+ *
+ * @return void
+ */
 function render_docs() 
 {
     echo '<div class="wrap">';

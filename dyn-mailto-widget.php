@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * PHP Version 7
+ * Defines core widget that for running user-defined mailto templates.
+ */
+
 namespace jmurrell\DynMailto;
 
 defined('ABSPATH') || exit;
+
+/**
+ * Core widget class - runs templating on user defined twig templates.
+ */
 
 class Widget extends \WP_Widget
 {
@@ -19,6 +28,9 @@ class Widget extends \WP_Widget
     private $_twig_loader;
     private $_twig;
 
+    /**
+     * Constructs a Widget instance.
+     */
     public function __construct() 
     {
         parent::__construct(
@@ -44,6 +56,13 @@ class Widget extends \WP_Widget
         $this->_autocomplete_fields = Field_Loader::get_autocomplete_fields();
     }
 
+    /**
+     * WP_WIDGET::form - renders widget form. 
+     *
+     * @param array $instance
+     *
+     * @return void
+     */
     public function form( $instance ) 
     {
         wp_enqueue_script('jquery-ui-autocomplete');
@@ -62,20 +81,29 @@ class Widget extends \WP_Widget
         wp_enqueue_script('dyn-mailto-form-autogrow', plugins_url('dyn-mailto/js/form_autogrow.js'), array(), null, false);
 
         wp_localize_script('dyn-mailto-form-textcomplete', 'textcomplete_ajax_params', $this->_autocomplete_fields);
-        $this->render_widget_form($instance);
+
+        $this->_render_widget_form($instance);
     }
 
+    /**
+     * check template and update if valid.
+     *
+     * @param array $new_instance
+     * @param array $old_instance
+     *
+     * @return bool
+     */
     public function update( $new_instance, $old_instance ) 
     {
         /* Check the syntax of entered values before saving. */
 
         try {
-            isset($new_instance['display']) && $this->render_from_string(sanitize_textarea_field($new_instance['display']), $this->_template_fields);
-            isset($new_instance['to']) && $this->render_from_string(sanitize_textarea_field($new_instance['to']), $this->_template_fields);
-            isset($new_instance['cc']) && $this->render_from_string(sanitize_textarea_field($new_instance['cc']), $this->_template_fields);
-            isset($new_instance['bcc']) && $this->render_from_string(sanitize_textarea_field($new_instance['bcc']), $this->_template_fields);
-            isset($new_instance['subject']) && $this->render_from_string(sanitize_textarea_field($new_instance['subject']), $this->_template_fields);
-            isset($new_instance['body']) && $this->render_from_string(sanitize_textarea_field($new_instance['body']), $this->_template_fields); 
+            isset($new_instance['display']) && $this->_render_from_string(sanitize_textarea_field($new_instance['display']), $this->_template_fields);
+            isset($new_instance['to']) && $this->_render_from_string(sanitize_textarea_field($new_instance['to']), $this->_template_fields);
+            isset($new_instance['cc']) && $this->_render_from_string(sanitize_textarea_field($new_instance['cc']), $this->_template_fields);
+            isset($new_instance['bcc']) && $this->_render_from_string(sanitize_textarea_field($new_instance['bcc']), $this->_template_fields);
+            isset($new_instance['subject']) && $this->_render_from_string(sanitize_textarea_field($new_instance['subject']), $this->_template_fields);
+            isset($new_instance['body']) && $this->_render_from_string(sanitize_textarea_field($new_instance['body']), $this->_template_fields); 
         } catch (\Twig\Error\SyntaxError $e) {
             /* Leave error message */
             $this->_syntax_error = true;
@@ -91,6 +119,15 @@ class Widget extends \WP_Widget
         $instance['body'] = isset($new_instance['body']) ? sanitize_textarea_field($new_instance['body']) : ''; 
         return $new_instance;
     }
+
+    /**
+     * widget - renders main widget.
+     *
+     * @param $args
+     * @param $instance
+     *
+     * @return void
+     */
 
     public function widget( $args, $instance ) 
     {
@@ -118,20 +155,33 @@ class Widget extends \WP_Widget
         );
 
         echo $args['before_widget'];
-        $this->render_widget($widget_fields);
+        $this->_render_widget($widget_fields);
         echo $args['after_widget'];
 
     }
 
-    // Render widget with Twig template. Used by widget().
-    private function render_widget( $fields ) 
+    /**
+     * Render widget with Twig template. Used by widget().
+     *
+     * @param array $fields
+     *
+     * @return void
+     */
+
+    private function _render_widget( $fields ) 
     {
         $template = $this->_twig->load('widget.html');
         echo $template->render($fields);
     }
 
-    // Render form with Twig template. Used by form().
-    private function render_widget_form($instance) 
+    /**
+     * Render form with Twig template. Used by form().
+     *
+     * @param array $instance
+     *
+     * @return void
+     */
+    private function _render_widget_form($instance) 
     {
         $template = $this->_twig->load('widget_form.html');
 
@@ -168,18 +218,16 @@ class Widget extends \WP_Widget
         $_template_fields['syntax_error'] = false;
     }
 
-    private function render_from_string( $template, $fields ) 
+    /**
+     * Utility function to quickly render Twig template from string
+     *
+     * @param string $template Template to render
+     * @param array  $fields   Associative array of fields to render with
+     *
+     * @return string
+     */
+    private function _render_from_string( $template, $fields ) 
     {
         return $this->_twig->createTemplate($template)->render($fields);
     }
-
-    private function var_error_log( $object=null )
-    {
-        ob_start();
-        var_dump($object);
-        $contents = ob_get_contents();
-        ob_end_clean();
-        error_log($contents);
-    }
-
 }
