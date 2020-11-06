@@ -1,9 +1,19 @@
 <?php
 
+/**
+ * PHP Version 7
+ * Defines static helper class for retrieving template fields.
+ */
+
 namespace jmurrell\DynMailto;
 
 class Field_Helpers
 {
+    /**
+     * Get visitor IP address.
+     * 
+     * @return string
+     */
     public static function get_user_ip() 
     {
         if (! empty($_SERVER['HTTP_CLIENT_IP']) ) {
@@ -17,6 +27,11 @@ class Field_Helpers
         return apply_filters('wpb_get_ip', $ip);
     }
 
+    /**
+     * Makes call to FreeGeoIp.app to retrieve associative array of geolocation info.
+     *
+     * @return array
+     */
     public static function get_user_location()
     {
         include_once DYN_MAILTO_PLUGIN_DIR . ('/providers/FreeGeoIp.php');
