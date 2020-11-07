@@ -1,10 +1,12 @@
 Contributors: murrelljenna
+Plugin Name: Mailto Templates
 Tags: mailto, link, template, contact, email, dynamic
 Requires at least: 5.5
 Tested up to: 7.2
 Requires PHP: 7.2.5
 Stable tag: 1.0
-License: GPLv3
+Version: 1.0
+License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Enables you to create email links that load differently depending on who visits the page, where they visit the page from, where on the site they see the link, and more.

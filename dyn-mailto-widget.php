@@ -17,13 +17,12 @@ class Widget extends \WP_Widget
 {
     private $_template_fields = array();
     private $_autocomplete_fields = array();
-    private $_plugin_dir_path;
 
     /* Error state for form entry */
 
     private $_syntax_error = false;
     
-    /* Twig */
+    /* Twig environment variables */
 
     private $_twig_loader;
     private $_twig;
@@ -41,16 +40,16 @@ class Widget extends \WP_Widget
             )
         );
 
-        $this->_plugin_dir_path = dirname(__FILE__);
-
         /* Load twig */
 
         $this->_twig_loader = new \Twig\Loader\FilesystemLoader(
-            "$this->_plugin_dir_path/templates"
+            DYN_MAILTO_PLUGIN_DIR . "/templates"
         );
         $this->_twig = new \Twig\Environment($this->_twig_loader);
 
-        include_once "$this->_plugin_dir_path/admin/field_loader.php";
+        include_once DYN_MAILTO_PLUGIN_DIR . "/admin/field_loader.php";
+
+        /* Load our template fields and autocomplete fields. Former is used for twig templating, latter just used for js autocompletion of field names */
 
         $this->_template_fields = Field_Loader::get_template_fields();
         $this->_autocomplete_fields = Field_Loader::get_autocomplete_fields();
@@ -65,6 +64,9 @@ class Widget extends \WP_Widget
      */
     public function form( $instance ) 
     {
+
+        /* Get our jquery loaded */
+
         wp_enqueue_script('jquery-ui-autocomplete');
         wp_enqueue_script('jquery-ui-widget');
         wp_enqueue_script('jquery-ui-menu');
@@ -79,6 +81,9 @@ class Widget extends \WP_Widget
         // Enables continual expansion of widget textarea without scrollbars.
         wp_enqueue_script('dyn-mailto-form-autogrow-dist', plugins_url('dyn-mailto/includes/autosize.min.js'), array(), null, false);
         wp_enqueue_script('dyn-mailto-form-autogrow', plugins_url('dyn-mailto/js/form_autogrow.js'), array(), null, false);
+
+        /* Run textcomplete.js with a list of all our parameter names. Enables basic syntax completion for the user
+        when entering template */
 
         wp_localize_script('dyn-mailto-form-textcomplete', 'textcomplete_ajax_params', $this->_autocomplete_fields);
 
@@ -95,7 +100,7 @@ class Widget extends \WP_Widget
      */
     public function update( $new_instance, $old_instance ) 
     {
-        /* Check the syntax of entered values before saving. */
+        /* Check the syntax of entered values before saving. This is costly, but best option right now.*/
 
         try {
             isset($new_instance['display']) && $this->_render_from_string(sanitize_textarea_field($new_instance['display']), $this->_template_fields);
@@ -104,9 +109,14 @@ class Widget extends \WP_Widget
             isset($new_instance['bcc']) && $this->_render_from_string(sanitize_textarea_field($new_instance['bcc']), $this->_template_fields);
             isset($new_instance['subject']) && $this->_render_from_string(sanitize_textarea_field($new_instance['subject']), $this->_template_fields);
             isset($new_instance['body']) && $this->_render_from_string(sanitize_textarea_field($new_instance['body']), $this->_template_fields); 
+
+            /* If theres is a syntax error, catch it */
+
         } catch (\Twig\Error\SyntaxError $e) {
-            /* Leave error message */
+            /* Leave error message. Twig template widget_form.html renders error when this is set to true. */
             $this->_syntax_error = true;
+
+            /* Reject changes and reload form() */
             return false;
         }
 
@@ -128,12 +138,18 @@ class Widget extends \WP_Widget
      *
      * @return void
      */
-
     public function widget( $args, $instance ) 
     {
+        /* We'll be loading templates from strings, not from the file system in this case. Add extension to do so */
+
         $this->_twig->addExtension(new \Twig\Extension\StringLoaderExtension());
-        $sandbox_options = include_once "$this->_plugin_dir_path/admin/get_sandbox_options.php";
+
+        /* Add sandboxing options to our twig instance */
+
+        $sandbox_options = include_once DYN_MAILTO_PLUGIN_DIR . "/admin/get_sandbox_options.php";
         $this->_twig->addExtension(new \Twig\Extension\SandboxExtension($sandbox_options));
+
+        /* Load templates for each of these fields first */
 
         $template = array(
         'display' => $this->_twig->createTemplate(esc_attr($instance['display'])),
@@ -144,7 +160,8 @@ class Widget extends \WP_Widget
         'body' => $this->_twig->createTemplate(esc_attr($instance['body']))
         );
 
-        // Run templating
+        /* Render the template using our template fields */
+
         $widget_fields = array(
         'display' => $template['display']->render($this->_template_fields),
         'to' => $template['to']->render($this->_template_fields),
@@ -153,6 +170,8 @@ class Widget extends \WP_Widget
         'subject' => $template['subject']->render($this->_template_fields),
         'body' => $template['body']->render($this->_template_fields),
         );
+
+        /* With all our templates rendered, we can finally render the page itself */
 
         echo $args['before_widget'];
         $this->_render_widget($widget_fields);
@@ -186,6 +205,9 @@ class Widget extends \WP_Widget
         $template = $this->_twig->load('widget_form.html');
 
         $fields = array(
+        
+        /* Field ID's for each field. Used for labels in the form*/
+
         'field_id' => array(
         'display' => esc_attr($this->get_field_id('display')),
         'to' => esc_attr($this->get_field_id('to')),
@@ -194,6 +216,9 @@ class Widget extends \WP_Widget
         'subject' => esc_attr($this->get_field_id('subject')),
         'body' => esc_attr($this->get_field_id('body')),
         ),
+
+        /* Field names for each field */
+
         'field_name' => array(
         'display' => esc_attr($this->get_field_name('display')),
         'to' => esc_attr($this->get_field_name('to')),
@@ -202,6 +227,9 @@ class Widget extends \WP_Widget
         'subject' => esc_attr($this->get_field_name('subject')),
         'body' => esc_attr($this->get_field_name('body')),
         ),
+
+        /* Actual values for each field */
+
         'field_value' => array(
         'syntax_error' => $this->_syntax_error,
         'display' => isset($instance['display']) ? $instance['display'] : '',
