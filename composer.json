@@ -1,5 +1,21 @@
 {
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "murrelljenna/freegeoip-php-wrapper",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/murrelljenna/freegeoip-php-wrapper",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        }
+    ],
+
     "require": {
+        "murrelljenna/freegeoip-php-wrapper": "dev-master",
         "twig/twig": "^3.0",
         "wp-coding-standards/wpcs": "^2.3",
         "php-http/curl-client": "^2.1"

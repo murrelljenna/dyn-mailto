@@ -34,9 +34,9 @@ class Field_Helpers
      */
     public static function get_user_location()
     {
-        include_once DYN_MAILTO_PLUGIN_DIR . ('/providers/FreeGeoIp.php');
+        include_once DYN_MAILTO_PLUGIN_DIR . ('/vendor/murrelljenna/freegeoip-php-wrapper/FreeGeoIp.php');
 
-        $ip_info = new FreeGeoIp('json');
+        $ip_info = new \FreeGeoIp('json');
 
         try {
             $response = $ip_info->fetch(self::get_user_IP());
