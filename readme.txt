@@ -2,8 +2,8 @@ Contributors: murrelljenna
 Plugin Name: Mailto Templates
 Tags: mailto, link, template, contact, email, dynamic
 Requires at least: 5.5
-Tested up to: 7.2
-Requires PHP: 7.2.5
+Tested up to: 5.5
+Requires PHP: 7.2
 Stable tag: 1.0
 Version: 1.0
 License: GPLv3 or later
