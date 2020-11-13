@@ -6,6 +6,10 @@ PLUGIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 TARGET_DIR="${PLUGIN_DIR}/dist"
 VENDOR_DIR="${PLUGIN_DIR}/vendor"
 
+if [ -d "${PLUGIN_DIR}/dist" ] ; then
+    mkdir "${PLUGIN_DIR}/dist"
+fi
+
 rsync -ar "${PLUGIN_DIR}" "${TARGET_DIR}" \
     --exclude="vendor/squizlabs" \
     --exclude="vendor/wp-coding-standards" \
@@ -17,6 +21,7 @@ rsync -ar "${PLUGIN_DIR}" "${TARGET_DIR}" \
     --exclude="composer.lock" \
     --exclude="*.swp" \
     --exclude="dist" \
-    --exclude="build.sh"
+    --exclude="build.sh" \
+    --exclude="dyn-mailto.zip"
 
-zip -r "${TARGET_DIR}/dyn-mailto.zip" "${TARGET_DIR}/dyn-mailto"
+cd "${PLUGIN_DIR}/dist" && zip -r dyn-mailto.zip *
