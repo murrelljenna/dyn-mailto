@@ -73,19 +73,19 @@ class Widget extends \WP_Widget
         wp_enqueue_script('jquery-ui-position');
 
         // Load css
-        wp_enqueue_style('dyn-mailto-widget-form', plugins_url('dyn-mailto/css/widget_form.css'));
+        wp_enqueue_style('dynamic-mailto-widget-form', plugins_url('dynamic-mailto/css/widget_form.css'));
 
         // Enables autocompletion of template fields in widget textarea.
-        wp_enqueue_script('dyn-mailto-form-textcomplete', plugins_url('dyn-mailto/js/form_textcomplete.js'), array(), null, false);
+        wp_enqueue_script('dynamic-mailto-form-textcomplete', plugins_url('dynamic-mailto/js/form_textcomplete.js'), array(), null, false);
 
         // Enables continual expansion of widget textarea without scrollbars.
-        wp_enqueue_script('dyn-mailto-form-autogrow-dist', plugins_url('dyn-mailto/includes/autosize.min.js'), array(), null, false);
-        wp_enqueue_script('dyn-mailto-form-autogrow', plugins_url('dyn-mailto/js/form_autogrow.js'), array(), null, false);
+        wp_enqueue_script('dynamic-mailto-form-autogrow-dist', plugins_url('dynamic-mailto/includes/autosize.min.js'), array(), null, false);
+        wp_enqueue_script('dynamic-mailto-form-autogrow', plugins_url('dynamic-mailto/js/form_autogrow.js'), array(), null, false);
 
         /* Run textcomplete.js with a list of all our parameter names. Enables basic syntax completion for the user
         when entering template */
 
-        wp_localize_script('dyn-mailto-form-textcomplete', 'textcomplete_ajax_params', $this->_autocomplete_fields);
+        wp_localize_script('dynamic-mailto-form-textcomplete', 'textcomplete_ajax_params', $this->_autocomplete_fields);
 
         $this->_render_widget_form($instance);
     }
