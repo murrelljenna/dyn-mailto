@@ -1,5 +1,6 @@
-Contributors: murrelljenna
+=== Mailto Templates ===
 Plugin Name: Mailto Templates
+Contributors: jmurrell
 Tags: mailto, link, template, contact, email, dynamic
 Requires at least: 5.5
 Tested up to: 5.5
@@ -24,3 +25,8 @@ This plugin allows you to write dynamic mailto links that can access information
 In addition to including relevant data in the link, dynamic mailto links can incorporate useful logical constructs, including if statements, loops and randomizing fields.
 
 This plugin makes use of the [FreeGeoIP API](https://freegeoip.app/) to retrieve visitor location for use by your mailto templates. This API will not be called unless you make use of location fields inside a mailto template, and the API will only be called when that specific template is rendered. No other 3rd party APIs are used.
+
+== Contributing == 
+
+This plugin is open-source. Want to make a contribution? Visit the plugin [GitHub repo](https://github.com/murrelljenna/dyn-mailto).
+
