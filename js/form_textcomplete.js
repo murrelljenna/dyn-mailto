@@ -29,7 +29,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 'use strict';
 
 (function (factory) {
-	'use strict';
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
 		define(['jquery'], factory);
@@ -41,7 +40,6 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		factory(jQuery);
 	}
 }(function ($) {
-	'use strict';
 	var caretClass	= 'textarea-helper-caret'
 	, dataKey		= 'textarea-helper'
 
@@ -145,46 +143,45 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	}).call(TextareaHelper.prototype);
 	
 	$.fn.textareaHelper = function (method) {
-	this.each(function () {
-		var $this	= $(this)
-		, instance = $this.data(dataKey);
-		if (!instance) {
-		instance = new TextareaHelper(this);
-		$this.data(dataKey, instance);
-		}
-	});
-	if (method) {
-		var instance = this.first().data(dataKey);
-		return instance[method]();
-	} else {
-		return this;
-	}
+        this.each(function () {
+            var $this	= $(this)
+            , instance = $this.data(dataKey);
+            if (!instance) {
+            instance = new TextareaHelper(this);
+            $this.data(dataKey, instance);
+            }
+        });
+        if (method) {
+            var instance = this.first().data(dataKey);
+            return instance[method]();
+        } else {
+            return this;
+        }
 	};
-
 }));
 
-	jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
-		_create: function() {
-			this._super();
-			this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
-		},
-		_renderMenu: function( ul, items ) {
-			var that = this,
-				currentCategory = "";
-			jQuery.each( items, function( index, item ) {
-				var li;
-				if ( item.category != currentCategory ) {
-					console.log(item);
-					ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-					currentCategory = item.category;
-				}
-				li = that._renderItemData( ul, item );
-				if ( item.category ) {
-					li.attr( "aria-label", item.category + " : " + item.label );
-				}
-			});
-		}
-	});
+jQuery.widget( "custom.catcomplete", jQuery.ui.autocomplete, {
+    _create: function() {
+        this._super();
+        this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+    },
+    _renderMenu: function( ul, items ) {
+        var that = this,
+            currentCategory = "";
+        jQuery.each( items, function( index, item ) {
+            var li;
+            if ( item.category != currentCategory ) {
+                console.log(item);
+                ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+                currentCategory = item.category;
+            }
+            li = that._renderItemData( ul, item );
+            if ( item.category ) {
+                li.attr( "aria-label", item.category + " : " + item.label );
+            }
+        });
+    }
+});
 
 let loadAutocomplete = function() {
     // The tags we will be looking for
