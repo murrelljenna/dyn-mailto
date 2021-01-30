@@ -186,83 +186,86 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		}
 	});
 
+let loadAutocomplete = function() {
+    // The tags we will be looking for
+    var field_names = textcomplete_ajax_params;
+    // State variable to keep track of which category we are in
+    var tagState = field_names;
+
+    // Helper functions
+    function split(val) {
+        return val.split( /(?={{\s*)/ );
+    }
+
+    function extractLast(term) {
+        return split(term).pop().substring(2).trim();
+    }
+
+    jQuery(".widefat")
+
+    .catcomplete({
+        minLength : 0,
+        autoFocus : true,
+        source : function(request, response) {
+            // Use only the last entry from the textarea (exclude previous matches)
+            var lastEntry = extractLast(request.term);
+
+            var filteredArray = jQuery.map(tagState, function(item) {
+                if (item.label.indexOf(lastEntry) === 0) {
+                    return { label: item.label, category: item.category };
+                } else {
+                    return null;
+                }
+            });
+            
+            // delegate back to catcomplete, but extract the last term
+            response(jQuery.ui.autocomplete.filter(filteredArray, lastEntry));
+        },
+        focus : function() {
+            // prevent value inserted on focus
+            return false;
+        },
+        select : function(event, ui) {
+            var terms = split(this.value);
+            terms.pop();
+
+            // add the selected item
+            terms.push(`{{ ${ui.item.value} }}`);
+            // add placeholder to get the comma-and-space at the end
+            terms.push("");
+            this.value = terms.join("");
+            return false;
+        }
+    }).on("keydown", function(event) {
+        // don't navigate away from the field on tab when selecting an item
+        if (event.keyCode === jQuery.ui.keyCode.TAB /** && jQuery(this).data("ui-catcomplete").menu.active **/) {
+            event.preventDefault();
+            return;
+        }
+        // Check that cursor is in open bracket
+
+        const { value } = event.target;
+
+        const openBraces = value.replace(/{{[ a-zA-Z0-9_]+}}/g, match => match.replace(/./g, '*')).indexOf("{{")
+
+        if (openBraces >= 0) {
+            jQuery(this).catcomplete( "option", "disabled", false );
+        } else {
+            jQuery(this).catcomplete( "option", "disabled", true );
+        }
+
+        // Code to position and move the selection box as the user types
+        var newY = jQuery(this).textareaHelper('caretPos').top + (parseInt(jQuery(this).css('font-size'), 10) * 1.5);
+        var newX = jQuery(this).textareaHelper('caretPos').left;
+        var posString = "left+" + newX + "px top+" + newY + "px";
+        jQuery(this).catcomplete("option", "position", {
+            my : "left top",
+            at : posString
+        });
+    });
+}
+
 jQuery(function() {
-	jQuery("document").ready(function() {
-		// The tags we will be looking for
-		var field_names = textcomplete_ajax_params;
-		// State variable to keep track of which category we are in
-		var tagState = field_names;
-
-		// Helper functions
-		function split(val) {
-			return val.split( /(?={{\s*)/ );
-		}
-
-		function extractLast(term) {
-			return split(term).pop().substring(2).trim();
-		}
-
-		jQuery(".widefat")
-
-		.catcomplete({
-			minLength : 0,
-			autoFocus : true,
-			source : function(request, response) {
-				// Use only the last entry from the textarea (exclude previous matches)
-				var lastEntry = extractLast(request.term);
-
-				var filteredArray = jQuery.map(tagState, function(item) {
-					if (item.label.indexOf(lastEntry) === 0) {
-						return { label: item.label, category: item.category };
-					} else {
-						return null;
-					}
-				});
-				
-				// delegate back to catcomplete, but extract the last term
-				response(jQuery.ui.autocomplete.filter(filteredArray, lastEntry));
-			},
-			focus : function() {
-				// prevent value inserted on focus
-				return false;
-			},
-			select : function(event, ui) {
-				var terms = split(this.value);
-				terms.pop();
-
-				// add the selected item
-				terms.push(`{{ ${ui.item.value} }}`);
-				// add placeholder to get the comma-and-space at the end
-				terms.push("");
-				this.value = terms.join("");
-				return false;
-			}
-		}).on("keydown", function(event) {
-			// don't navigate away from the field on tab when selecting an item
-			if (event.keyCode === jQuery.ui.keyCode.TAB /** && jQuery(this).data("ui-catcomplete").menu.active **/) {
-				event.preventDefault();
-				return;
-			}
-			// Check that cursor is in open bracket
-
-			const { value } = event.target;
-
-			const openBraces = value.replace(/{{[ a-zA-Z0-9_]+}}/g, match => match.replace(/./g, '*')).indexOf("{{")
-
-			if (openBraces >= 0) {
-				jQuery(this).catcomplete( "option", "disabled", false );
-			} else {
-				jQuery(this).catcomplete( "option", "disabled", true );
-			}
-
-			// Code to position and move the selection box as the user types
-			var newY = jQuery(this).textareaHelper('caretPos').top + (parseInt(jQuery(this).css('font-size'), 10) * 1.5);
-			var newX = jQuery(this).textareaHelper('caretPos').left;
-			var posString = "left+" + newX + "px top+" + newY + "px";
-			jQuery(this).catcomplete("option", "position", {
-				my : "left top",
-				at : posString
-			});
-		});
-	});
+	jQuery( document ).on('widget-updated widget-added', loadAutocomplete);
+	jQuery("document").ready(loadAutocomplete);
 });
